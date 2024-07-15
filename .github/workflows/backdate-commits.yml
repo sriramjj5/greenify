@@ -1,0 +1,23 @@
+name: Backdate Commits
+
+on: [push]
+
+jobs:
+  backdate-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Create and push backdated commits
+      run: |
+        chmod +x backdate_commits.sh
+        ./backdate_commits.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
