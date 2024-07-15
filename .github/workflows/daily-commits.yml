@@ -1,0 +1,25 @@
+name: Daily Commits
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # UTC
+
+jobs:
+  daily-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Create and push daily commit
+      run: |
+        chmod +x daily_commits.sh
+        ./daily_commits.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
