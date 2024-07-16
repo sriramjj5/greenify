@@ -1,0 +1,24 @@
+name: Backdate Commits
+
+on: [push]
+
+jobs:
+  backdate-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "sriramjj5"
+        git config --global user.email "sriramjj5@gmail.com"
+
+    - name: Create and push backdated commits
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+        chmod +x backdate_commits.sh
+        ./backdate_commits.sh
+        git push https://sriramjj5:${{ secrets.GH_PAT }}@github.com/sriramjj5/greenify.git
